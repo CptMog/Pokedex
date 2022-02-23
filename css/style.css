@@ -1,0 +1,108 @@
+*{
+    box-sizing: border-box;
+}
+
+body{
+    background-color: orange;
+    font-family: sans-serif;
+}
+
+table{
+    background-color: white;
+}
+
+h1{
+    text-align: center;
+    font-size: 42px;
+    text-shadow: 2px 2px 2px white;
+}
+
+table,tr,th,td{
+    border: 1px solid black;
+    padding: 10px 30px;
+    border-collapse: collapse;
+}
+
+tr:nth-child(2n){
+    background-color: #EEEEEE
+}
+
+table{
+    margin:0 auto;
+}
+
+.search_bl{
+    margin:20px auto;
+    text-align: center;
+
+}
+
+#search,#btn_search{
+    height: 30px;
+    border: none;
+    border-radius: 10px;
+}
+.invisible{
+    display: none;
+}
+
+#search{
+    padding: 0 20px;
+}
+
+#btn_search{
+    background-color: red;
+    color: white;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+#btn_search:hover{
+    /* padding:0 11px; */
+    color: red;
+    background-color: #fff;
+    transition: all .4s;
+}
+
+.details{
+    background-color: orange;
+    color:white;
+    font-size: 1.2rem;
+    border:none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.details:hover{
+    transform: scale(1.2);
+    transition: transform .5s;
+}
+
+.pokedex{
+    position: relative;
+}
+
+.container{
+    background-color: #fff;
+    padding:8px;
+    width: 98%;
+    margin: 0 auto;
+}
+.flex{
+    display: flex;
+}
+
+.container .bl_droite, .container .bl_guche{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.description, .location, .types{
+    padding: 20px;
+}
+
+ul{
+    display: block;
+}
