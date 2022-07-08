@@ -1,35 +1,34 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="https://img.icons8.com/color/48/000000/superball.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="css/style.css">
-    <title>Pokémon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Pokemon</title>
 </head>
 <body>
-    <h1>Pokédex Pokemon</h1>
-    <div class="search_bl">   
-        <input type="search" id="search" placeholder="Name of the pokemon">
-        <button id="btn_search">Rechercher</button>
+    <div class="container-flex flex">
+        <div class="container-left-search p-5 border w-96">
+            <header>
+                <div class="flex items-center items-end justify-between ">
+                    <h1 class="text-3xl ">Pokémon</h1>
+                    <img src="assets/light.png" class="w-6 h-6 cursor-pointer" alt="light">
+                </div>
+                <div class="container-search-filter mt-8 flex items-center">
+                    <input type="text" name="search" class="border mr-4 rounded h-7 w-72" id="search"/>
+                    <img src="assets/filter.png" class="w-6 h-6 mb-0.5 cursor-pointer" id="filter" alt="filter">
+                </div>
+            </header>
+            <div id="container-list-poke"  class="overflow-auto h-[65vh] p-3 mt-4"></div>
+        </div>
+        <div id="container-right-display" class="w-[100%]"></div>
     </div>
-    <div class="pokedex">
-        <table>
-            <thead>
-                <tr>
-                    <th>id</th>
-                    <th>name</th>
-                    <th>img</th>
-                    <th>type</th>
-                    <th>details</th>
-                </tr>
-            </thead>
-            <tbody id="liste_pokemon"></tbody>
-        </table>
-    </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <script src="js/main.js"></script>
+    <footer class="border text-[white] bg-[black] h-[3.6rem] p-2">
+        <a href="https://www.flaticon.com/free-icons/filter" title="filter icons">Filter icons created by herikus - Flaticon</a>
+    </footer>
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>
