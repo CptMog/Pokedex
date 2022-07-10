@@ -13,21 +13,37 @@ export default class Pokedex{
     }
 
     displayDetails(data){
-        let imgPokemon = document.createElement("img");
+        
+        const divNameNumPokemon = document.createElement("div");
+        const divDetailsPokemon = document.createElement("div");
+        const divBarCenter = document.createElement('div');
+        const imgPokemon = document.createElement("img");
+        const namePokemon = document.createElement('span');
+        const numPokemon = document.createElement('span');
 
+        namePokemon.textContent = data.name;
+        numPokemon.textContent = "#"+data.id;
+        divNameNumPokemon.classList ="pl-[5rem] text-3xl flex flex-col w-[100%] p-3";
+        divDetailsPokemon.classList ="flex justify-center";
+        divBarCenter.classList ="h-[100%] w-[5px] ml-2 bg-[black]";
         imgPokemon.setAttribute('src',data.sprites.front_default)
         imgPokemon.setAttribute('alt','pokemon');
         imgPokemon.setAttribute('style','image-rendering:pixelated;')
-        imgPokemon.classList ="w-72 h-72"
+        imgPokemon.classList ="w-72 h-72";
         
-        this.containerDisplayPokemon.append(imgPokemon)
+        divNameNumPokemon.append(numPokemon);
+        divNameNumPokemon.append(namePokemon);
+
+        divDetailsPokemon.append(imgPokemon);
+        divDetailsPokemon.append(divBarCenter);
+        this.containerDisplayPokemon.append(divNameNumPokemon);
+        this.containerDisplayPokemon.append(divDetailsPokemon);
     }
 
     displayDetailsPokemon(numero){
         this.containerDisplayPokemon.textContent ="";
         this.getPokeFromApi(numero).then(data =>{ this.displayDetails(data) })
     }
-
 
     simpleDisplay(data){
          //elements
