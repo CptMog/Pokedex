@@ -1,13 +1,16 @@
-
-import Pokedex from "./Pokedex.class.js";
+import Display from "./classes/Display.js";
+import Pokedex from "./classes/Pokedex.js";
 
 const list_pke = document.getElementById("container-list-poke");
 const block_display = document.getElementById("container-right-display");
 
-const poke = new Pokedex(list_pke,block_display);
+const pokedex = new Pokedex();
+const displayer = new Display(list_pke,block_display,pokedex);
 
-poke.displayListOfPokemon();
-poke.displayDetailsPokemon(1);
+window.setTimeout(() =>{ document.querySelector('.loading-container').classList ="fade_out"},4000)
 
-poke.getPokeFromApi(1).then(d => console.log(d))
+displayer.displayListOfPokemon();
+displayer.displayDetailsPokemon(1);
+
+pokedex.getPokeFromApi(1).then(d => console.log(d)) //just for testing don't pay attention ! 
 
