@@ -7,7 +7,7 @@ export default class Display{
         this.pokedex = pokedex;
     }
 
-    setDetailsIdentification(data){
+    setIdentification(data){
         const namePokemon = document.createElement('span');
         const numPokemon = document.createElement('span');
 
@@ -19,82 +19,85 @@ export default class Display{
         return [numPokemon,namePokemon];
     }
 
-    setDetailsImageAndStates(data){
-        const imgPokemon = document.createElement("img");
-        const tabStates = [];
-        for (const stat of data.stats) {
-            tabStates.push(stat.stat.name +" = "+stat.base_stat)
-        }
-        const availablePokemonImage = data.sprites.other.dream_world.front_default != null 
-        ?
-        data.sprites.other.dream_world.front_default 
-        : 
-        data.sprites.front_default;
-
-        imgPokemon.setAttribute('src',availablePokemonImage)
-        imgPokemon.setAttribute('alt','pokemon');
-        imgPokemon.setAttribute('style','image-rendering:pixelated;')
-        imgPokemon.classList ="w-80 h-80";
-
-        return [imgPokemon,tabStates]
+    setImage(data){
+        const imagePokemon = document.createElement("img");
+        const wallPaperPokemon = data.sprites.other.dream_world.front_default;
+        const defaultImagePokemon = data.sprites.front_default;
+        
+        const availablePokemonImage = wallPaperPokemon != null ? wallPaperPokemon : defaultImagePokemon;
+        imagePokemon.setAttribute('src',availablePokemonImage)
+        imagePokemon.setAttribute('alt','pokemon');
+        imagePokemon.setAttribute('style','image-rendering:pixelated;')
+        imagePokemon.classList ="w-80 h-80";
+        
+        return imagePokemon
     }
 
-    displayDetails(data){
-        
-        const divNameNumPokemon = document.createElement("div");
-        const divDetailsPokemon = document.createElement("div");
-        const divBarCenter = document.createElement('div');
-        const divDetailsStat = document.createElement('div');
-        const [idPokemon,namePokemon] = this.setDetailsIdentification(data);
-        const [imagePokemon,tabStats] = this.setDetailsImageAndStates(data)
-
-
-        divNameNumPokemon.classList ="pl-[5rem] text-3xl flex flex-col w-[100%] p-3";
-        divDetailsPokemon.classList ="flex justify-center";
-        divBarCenter.classList ="h-[100%] w-[5px] ml-8 bg-[black]";
-        divDetailsStat.classList ="flex flex-col m-3 font-[800]"
-        divNameNumPokemon.append(idPokemon);
-        divNameNumPokemon.append(namePokemon);
-
-        divDetailsPokemon.append(imagePokemon);
-        divDetailsPokemon.append(divBarCenter);
-        for(const elem of tabStats){
-            let spanStat = document.createElement('span');
-            spanStat.textContent = elem;
-            divDetailsStat.append(spanStat)
+    setStatsInContainer(data,divStats){
+        for (const pokemonStat of data.stats) {
+            let stat = document.createElement('span');
+            stat.classList = "m-1 border p-1 ronded";
+            stat.textContent =pokemonStat.stat.name +" = "+pokemonStat.base_stat;
+            divStats.append(stat)
         }
-        divDetailsPokemon.append(divDetailsStat);
-        this.containerDisplayPokemon.append(divNameNumPokemon);
-        this.containerDisplayPokemon.append(divDetailsPokemon);
+    }
+
+    generateAllConaitner(){
+        const divIdentificationPokemon = document.createElement("div");
+        const divImageAndStat = document.createElement("div");
+        const divCenterBar = document.createElement('div');
+        const divStats = document.createElement('div');
+
+        divIdentificationPokemon.classList ="pl-[5rem] text-3xl flex flex-col w-[100%] p-3";
+        divImageAndStat.classList ="flex justify-center";
+        divCenterBar.classList ="h-[100%] w-[5px] ml-8 bg-[black]";
+        divStats.classList ="flex w-[15rem] p-2 h-[2rem] flex-wrap";
+
+        return [divIdentificationPokemon,divImageAndStat,divCenterBar,divStats]
+    }
+
+    templateDetailsDisplay(data){
+        
+        const [idPokemon,namePokemon] = this.setIdentification(data);
+        const imagePokemon = this.setImage(data);
+        const [divIdentification,divImageAndStat,divCenterBar,divStats] = this.generateAllConaitner();
+        this.setStatsInContainer(data,divStats);
+        
+        this.containerDisplayPokemon.textContent ="";//erase the last content before adding new one
+
+        divIdentification.append(idPokemon);
+        divIdentification.append(namePokemon);
+        divImageAndStat.append(imagePokemon);
+        divImageAndStat.append(divCenterBar);
+        divImageAndStat.append(divStats);
+
+        this.containerDisplayPokemon.append(divIdentification);
+        this.containerDisplayPokemon.append(divImageAndStat);
     }
 
     displayDetailsPokemon(numero){
-        this.containerDisplayPokemon.textContent ="";
-        this.pokedex.getPokeFromApi(numero).then(data =>{ this.displayDetails(data) })
+        this.pokedex.getPokeFromApi(numero).then(data =>{ this.templateDetailsDisplay(data) })
     }
 
-    simpleDisplay(data){
+    templateSimpleDisplay(data){
          //elements
+         const defaultImagePokemon = data.sprites.front_default;
          const divPokemon = document.createElement("div");
-         const imgPokemon = document.createElement("img");
+         const imagePokemon = document.createElement("img");
          const spanNamePokemon = document.createElement("h2");
      
-         //container div section
          divPokemon.classList = "border cursor-pointer hover:scale-105 flex mt-2 rounded items-center"; 
 
          divPokemon.onclick = ()=>{
              this.displayDetailsPokemon(data.id)
          }
-         //name section
-         spanNamePokemon.textContent=data.name; 
 
-         //image section
-         imgPokemon.setAttribute('src',data.sprites.front_default)
-         imgPokemon.setAttribute('alt',"pokemon");
-         imgPokemon.classList = "w-12 h-12 m-1";
-         
-         
-         divPokemon.appendChild(imgPokemon);
+         spanNamePokemon.textContent=data.name; 
+         imagePokemon.setAttribute('src',defaultImagePokemon)
+         imagePokemon.setAttribute('alt',"pokemon");
+         imagePokemon.classList = "w-12 h-12 m-1";
+          
+         divPokemon.appendChild(imagePokemon);
          divPokemon.appendChild(spanNamePokemon);
          this.containerListPokemone.appendChild(divPokemon);
     }
@@ -102,7 +105,7 @@ export default class Display{
     displayListOfPokemon(){
         let compteur = 1;
         do{
-            this.pokedex.getPokeFromApi(compteur).then(data => { this.simpleDisplay(data) })
+            this.pokedex.getPokeFromApi(compteur).then(data => { this.templateSimpleDisplay(data) })
             compteur++;
         }while(compteur<=this.pokedex.ALL_POKEMON);
     }

@@ -1,11 +1,11 @@
 import Display from "./classes/Display.js";
 import Pokedex from "./classes/Pokedex.js";
 
-const list_pke = document.getElementById("container-list-poke");
-const block_display = document.getElementById("container-right-display");
+const containerListPokemon = document.getElementById("container-list-poke");
+const containerDisplayPokemon = document.getElementById("container-right-display");
 
 const pokedex = new Pokedex();
-const displayer = new Display(list_pke,block_display,pokedex);
+const displayer = new Display(containerListPokemon,containerDisplayPokemon,pokedex);
 
 window.setTimeout(() =>{ document.querySelector('.loading-container').classList ="fade_out"},4000)
 
