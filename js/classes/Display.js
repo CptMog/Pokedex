@@ -5,13 +5,15 @@ export default class Display{
         this.containerListPokemone = containerListPokemone;
         this.containerDisplayPokemon = containerDisplayPokemon;
         this.pokedex = pokedex;
+        this.templateDisplayFilter = this.templateDisplayFilter.bind(this)
     }
 
     setIdentification(data){
         const namePokemon = document.createElement('span');
         const numPokemon = document.createElement('span');
 
-        namePokemon.textContent = data.name;
+        this.pokedex.getFrenchNamePokemon(data.id).then(d => namePokemon.textContent =d.names[4].name )
+        // namePokemon.textContent = data.name;
         namePokemon.classList ="font-bold";
         numPokemon.textContent = "#"+data.id;
         numPokemon.classList = "font-bold";
@@ -21,14 +23,14 @@ export default class Display{
 
     setImage(data){
         const imagePokemon = document.createElement("img");
-        const wallPaperPokemon = data.sprites.other.dream_world.front_default;
+        const wallPaperPokemon = data.sprites.other["official-artwork"].front_default;
         const defaultImagePokemon = data.sprites.front_default;
         
         const availablePokemonImage = wallPaperPokemon != null ? wallPaperPokemon : defaultImagePokemon;
         imagePokemon.setAttribute('src',availablePokemonImage)
         imagePokemon.setAttribute('alt','pokemon');
         imagePokemon.setAttribute('style','image-rendering:pixelated;')
-        imagePokemon.classList ="w-80 h-80";
+        imagePokemon.classList ="w-[450px] h-[450px]";
         
         return imagePokemon
     }
@@ -91,8 +93,8 @@ export default class Display{
          divPokemon.onclick = ()=>{
              this.displayDetailsPokemon(data.id)
          }
-
-         spanNamePokemon.textContent=data.name; 
+         this.pokedex.getFrenchNamePokemon(data.id).then(d => spanNamePokemon.textContent =d.names[4].name )
+        //  spanNamePokemon.textContent=data.name; 
          imagePokemon.setAttribute('src',defaultImagePokemon)
          imagePokemon.setAttribute('alt',"pokemon");
          imagePokemon.classList = "w-12 h-12 m-1";
@@ -109,4 +111,48 @@ export default class Display{
             compteur++;
         }while(compteur<=this.pokedex.ALL_POKEMON);
     }
+    
+    closeFilterPokemon(){
+       document.getElementById('filterPokemon').remove();
+    }
+
+    templateDisplayFilter(){
+        const divFilterType = document.createElement('div');
+        const divFlexFilterType = document.createElement('div');
+        const spanClose = document.createElement('span');
+        spanClose.textContent ='X';
+        spanClose.classList = "rounded-full cursor-pointer h-[1.5rem] w-[1.5rem] ml-3";
+        spanClose.onclick =this.closeFilterPokemon.bind(this);
+        divFlexFilterType.classList = "w-[8.5rem] h-[8rem]  flex justify-center flex-wrap p-1" ;
+        divFilterType.classList = "absolute bottom-[21rem] left-[18rem] bg-[white] border rounded-lg";
+        divFilterType.id ="filterPokemon";
+
+        divFilterType.append(spanClose);
+        for (const type of this.pokedex.TYPE_POKEMON) {
+            let typePokemon = document.createElement('span');
+            typePokemon.classList = "hover:scale-105 cursor-pointer border h-[2rem] mr-1 px-3 rounded-md";
+            typePokemon.textContent = type.type;
+            divFlexFilterType.append(typePokemon);
+        }
+        
+        divFilterType.append(divFlexFilterType);
+        return divFilterType;
+    }
+
+    displayFilterPokemon(){
+        const divFilterPokemon = this.templateDisplayFilter(); 
+        this.containerListPokemone.append(divFilterPokemon);
+    }
+
+    
+
+    // toggleDisplayFilterPokemon(){
+        
+    // }
+
+    display(){
+        this.displayListOfPokemon()
+        this.displayDetailsPokemon(1)
+    }
+
 }
